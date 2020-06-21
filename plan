@@ -1,0 +1,8 @@
+GlobalAccelerator
+DynamoDB Global Table
+ECS
+Frankurt eu-central-1
+US WEST us-west-2
+
+On-demand
+docker run --rm -p 8080:8080 -e "AWS_ACCESS_KEY_ID=AKIASGQOOV4M7GYIQW7S" -e "AWS_SECRET_ACCESS_KEY=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" jetbrains
