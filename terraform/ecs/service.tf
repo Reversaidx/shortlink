@@ -1,5 +1,3 @@
-# Gets the CURRENT task definition from AWS, reflecting anything that's been deployed
-# outside of Terraform (ie. CI builds).
 data "aws_ecs_task_definition" "shortlink" {
   task_definition = aws_ecs_task_definition.shortlink.family
   depends_on      = [aws_ecs_task_definition.shortlink]
@@ -11,8 +9,6 @@ resource "aws_ecs_cluster" "jetbrains" {
 
 resource "aws_ecs_task_definition" "shortlink" {
   family = "shortlink"
-
-  #   task_role_arn = "${module.iam_roles.ecs_service_deployment_role_arn}"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = "arn:aws:iam::151427919641:role/ecsTaskExecutionRole"
   cpu                      = 256
@@ -82,7 +78,6 @@ resource "aws_ecs_service" "shortlink" {
     data.aws_ecs_task_definition.shortlink.revision,
   )}"
 
-  #   iam_role = "${module.iam_roles.ecs_service_deployment_role_arn}"
   load_balancer {
     target_group_arn = aws_alb_target_group.jetbrains_app_target_group.arn
     container_name   = "jetbrains"

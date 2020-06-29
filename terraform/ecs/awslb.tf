@@ -1,5 +1,5 @@
 resource "aws_lb" "shortlink" {
-  name               = "shortlink-lb-tf"
+  name               = "shortlink-lb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.allow_8080.id, aws_security_group.allow_80.id]
@@ -8,14 +8,6 @@ resource "aws_lb" "shortlink" {
     Environment = "production"
   }
 }
-
-# resource "aws_lb_target_group" "jetbrains" {
-#   name        = "tf-example-lb-tg"
-#   port        = 8080
-#   protocol    = "HTTP"
-#   target_type = "ip"
-#   vpc_id      = aws_vpc.jetbrains.id
-# }
 
 resource "aws_alb_target_group" "jetbrains_app_target_group" {
   name                 = "jetbrains-app-target-group"
@@ -39,9 +31,6 @@ resource "aws_alb_target_group" "jetbrains_app_target_group" {
     type = "lb_cookie"
   }
 
-  tags = {
-    Name = "film-ratings-app-target-group"
-  }
 }
 resource "aws_alb_listener" "alb-listener" {
   load_balancer_arn = aws_lb.shortlink.arn

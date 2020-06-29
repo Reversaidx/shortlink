@@ -2,8 +2,8 @@ locals {
   env = "${terraform.workspace}"
   regions = {
     "default" = "eu-west-3"
-    "ew3" = "eu-west-3"
-    "uw2" = "us-west-2"
+    "ew3"     = "eu-west-3"
+    "uw2"     = "us-west-2"
   }
   REGION = "${lookup(local.regions, local.env)}"
 }

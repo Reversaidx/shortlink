@@ -1,6 +1,0 @@
-terraform {
-  backend "gcs" {
-    bucket = "tango-terraform-production"
-    prefix = "gcp/tangome-production/apps/internalsupporter"
-  }
-}
