@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "shortlink" {
-  name             = "shortlink"
+  name             = var.tableName
   hash_key         = "id"
   billing_mode     = "PAY_PER_REQUEST"
   stream_enabled   = true
@@ -10,11 +10,12 @@ resource "aws_dynamodb_table" "shortlink" {
     type = "S"
   }
 
-  replica {
-    region_name = "eu-west-3"
+  dynamic "replica"{
+    for_each = toset(var.replica_zones)
+    content {
+    region_name = replica.value
+    }
   }
 
-  replica {
-    region_name = "us-west-2"
-  }
 }
+

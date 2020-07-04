@@ -34,5 +34,4 @@ if __name__ == "__main__":
         os.environ['DEBUG']
     except:
         os.environ['DEBUG'] = "false"
-    os.environ['REGION'] = 'eu-central-1'
     app.run(debug=os.environ['DEBUG'], port=8080,host='0.0.0.0')

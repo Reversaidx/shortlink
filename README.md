@@ -12,12 +12,9 @@ The role will install:
 ```sh
 $ docker build -t reversaidx/jetbrains:v0.3 .
 $ docker push reversaidx/jetbrains:v0.3
-$ cd terraform/dynamodb && terraform apply 
-$ cd ../ecs && terraform apply 
+$ cd terraform/apps/shortlink && terraform apply 
+
 ```
-It's better to use s3 as terraform backend: 
-1. Create s3 bucket
-2. rename backend-s3.tf_disabled to backend-s3.tf_disabled with fixed name
 
 ### Updating Application
 1. Rebild docker 
@@ -25,5 +22,9 @@ It's better to use s3 as terraform backend:
 Example:
 ```sh
 docker build -t reversaidx/jetbrains:v0.3 . && docker push reversaidx/jetbrains:v0.3
-cd terraform/ecs && terraform apply
+cd terraform/apps/shortlink && terraform apply 
 ```
+### To do
+1. Add cdn
+2. Use uwsgi instead python as frontend
+....

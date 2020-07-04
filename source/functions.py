@@ -7,7 +7,7 @@ def put_link(fullUrl,dynamodb=None):
         dynamodb = boto3.resource('dynamodb', region_name=os.environ['REGION'])
     fullUrl_hash=hashlib.md5(fullUrl.encode()).hexdigest()
 
-    table = dynamodb.Table('shortlink')
+    table = dynamodb.Table(os.environ['TABLE_NAME'])
     response = table.put_item(
        Item={
             'id': fullUrl_hash,
@@ -23,7 +23,7 @@ def get_link(id, dynamodb=None):
     if not dynamodb:
         dynamodb = boto3.resource('dynamodb', region_name=os.environ['REGION'])
 
-    table = dynamodb.Table('shortlink')
+    table = dynamodb.Table(os.environ['TABLE_NAME'])
 
     try:
         response = table.get_item(Key={'id': id})

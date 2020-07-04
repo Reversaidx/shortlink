@@ -1,1 +1,0 @@
-../vars-global.tf

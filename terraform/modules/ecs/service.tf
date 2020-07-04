@@ -1,7 +1,3 @@
-data "aws_ecs_task_definition" "shortlink" {
-  task_definition = aws_ecs_task_definition.shortlink.family
-  depends_on      = [aws_ecs_task_definition.shortlink]
-}
 
 resource "aws_ecs_cluster" "jetbrains" {
   name = "jetbrains"
@@ -24,7 +20,7 @@ resource "aws_ecs_task_definition" "shortlink" {
         "secretOptions": null,
         "options": {
           "awslogs-group": "shortlink",
-          "awslogs-region": "${var.REGION}",
+          "awslogs-region": "${var.region}",
           "awslogs-stream-prefix": "ecs"
         }
       },
@@ -53,11 +49,15 @@ resource "aws_ecs_task_definition" "shortlink" {
       },
       {
         "name": "REGION",
-        "value": "${var.REGION}"
+        "value": "${var.region}" 
+      },
+      {
+        "name": "TABLE_NAME",
+        "value": "${var.tableName}"
       },
       {
         "name": "DOMAIN",
-        "value": "${aws_lb.shortlink.dns_name}"
+        "value": "${var.domain}"
       }
       ],
       "tags": null
@@ -73,11 +73,10 @@ resource "aws_ecs_service" "shortlink" {
   desired_count                      = 2
   deployment_minimum_healthy_percent = "50"
   deployment_maximum_percent         = "100"
-  task_definition = "${aws_ecs_task_definition.shortlink.family}:${max(
-    aws_ecs_task_definition.shortlink.revision,
-    data.aws_ecs_task_definition.shortlink.revision,
-  )}"
-
+  task_definition = aws_ecs_task_definition.shortlink.arn
+  # lifecycle {
+  #   ignore_changes = ["task_definition"]
+  # }
   load_balancer {
     target_group_arn = aws_alb_target_group.jetbrains_app_target_group.arn
     container_name   = "jetbrains"
@@ -91,6 +90,4 @@ resource "aws_ecs_service" "shortlink" {
   depends_on = [aws_ecs_task_definition.shortlink]
 }
 
-output "dns_name" {
-  value = aws_lb.shortlink.dns_name
-}
+
